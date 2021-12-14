@@ -1,0 +1,37 @@
+說明:
+http://tic-le-polard.blogspot.com/2015/01/emulate-pci-device-with-qemu.html
+
+
+github:
+https://github.com/grandemk/qemu_devices
+
+
+作法:
+git clone https://github.com/qemu/qemu
+git checkout stable-5.0 # master 沒有 Makefile.objs
+
+cp my_pci_device.c qemu/hw/char/
+
+// vim hw/char/Makefile.objs
+common-obj-$(CONFIG_HELLO) += my_pci_device.o
+
+// vim qemu/default-configs/x86_64-softmmu.mak
+CONFIG_HELLO=y
+
+// vim hw/char/Kconfig
+config HELLO
+    bool
+    
+// vim hw/pci/pci.c
+註解 pci_device_class_base_init 的 assert(conventional || pcie);
+否則無法加載 (不清楚為什麼)
+
+make
+./x86_64-softmmu/qemu-system-x86_64  -device hello-world-device
+
+[參考](https://stackoverflow.com/questions/56707632/how-do-i-make-my-device-available-to-qemu)
+
+
+
+
+也可參考 qemu 的 hw/misc/edu.c

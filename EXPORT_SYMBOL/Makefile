@@ -1,0 +1,18 @@
+# LINUX VERSION: 5.14-rc4
+PWD := $(shell pwd) 
+KVERSION := $(shell uname -r)
+KERNEL_DIR = /home/kruztw/Downloads/linux/
+#KERNEL_DIR = /usr/src/linux-headers-$(KVERSION)
+
+MODULE_NAME = moduleb
+obj-m := $(MODULE_NAME).o
+
+KBUILD_EXTRA_SYMBOLS+=/home/kruztw/Downloads/github/Gadget/linux/LKM/EXPORT_SYMBOL/modulea/Module.symvers
+export KBUILD_EXTRA_SYMBOLS
+
+all:
+	make -C modulea/
+	make -C $(KERNEL_DIR) M=$(PWD) modules
+	@rm .* modules.order Module.symvers *.dwo $(MODULE_NAME).mod* $(MODULE_NAME).o .simple.* > /dev/null 2>&1 || true
+clean:
+	make -C $(KERNEL_DIR) M=$(PWD) clean

@@ -1,0 +1,13 @@
+modulea EXPORT_SYMBOL 給 moduleb 使用
+
+cp modulea.ko 和 moduleb.ko 到 rootfs
+
+insmod modulea
+insmod moduleb
+lsmod           # 會看到 modulea 被 moduleb 使用
+rmmod moduleb
+rmmod modulea
+
+
+在 modulea 需要保留 Module.symvers 供 moduleb 參考
+

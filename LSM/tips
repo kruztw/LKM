@@ -1,0 +1,9 @@
+修改:
+
++++ security/security.c:74
++ EXPORT_SYMBOL(security_hook_heads);
+
++++ security/security.c:500
++ EXPORT_SYMBOL(security_add_hooks);
+
+會 crash 不知道為什麼 @@
